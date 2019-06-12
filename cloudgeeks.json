@@ -1,0 +1,42 @@
+{
+ "AWSTemplateFormatVersion" : "2010-09-09",
+ "Description" : "This cloudformation will create Ec2 and Vpc", 
+ "Parameters" : {
+    "VpccidrBlock": {
+        "Description": "Cloudgeeks Vpc",
+        "Type": "String",
+        "Default": "10.1.0.0/16"
+    },
+
+ },
+ "Mappings" : {
+    "RegionMap" : {
+        "us-east-1" : { "AMI" : "ami-0756fbca465a59a30" },
+
+    }
+
+ },
+    "Resources" : {
+      "EC2Instance" : {
+        "Type" : "AWS::EC2::Instance",
+        "Properties" : {
+            "KeyName" : "cloudgeeks",
+            "InstanceType" : "t2.micro",
+            "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]},
+        }
+     },
+     "Vpc" : {
+        "Type" : "AWS::EC2::VPC",
+        "Properties" : {
+            "CidrBlock" : { "Ref" : "VpccidrBlock" },
+            "Tags" : [ {
+                "Key": "Name",
+                "Value": "CloudGeeks",
+            } ]
+        }
+    },
+      
+    },
+ "Outputs" : {
+ },
+}
